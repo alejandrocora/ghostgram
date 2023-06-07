@@ -1,4 +1,4 @@
-<img src="ghostgram.jpg" width="75px" height="75px" align="right">
+<img src="ghostgram.jpeg" width="75px" height="75px" align="right">
 
 # Ghostgram - Instagram Comment Deleter (Beta)
 
