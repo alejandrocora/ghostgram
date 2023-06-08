@@ -7,8 +7,8 @@ import argparse
 import getpass
 from selenium.common.exceptions import *
 
-from utils.ig_handler import IGWebdriverHandler
-from utils.selaux import *
+from ghostgram.utils.ig_handler import IGWebdriverHandler
+from ghostgram.utils.selaux import *
 
 
 def main():
