@@ -4,20 +4,19 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
+from selenium.common.exceptions import ElementClickInterceptedException
 
 from ghostgram.utils.selaux import *
 from ghostgram.utils.constants import *
 
 
-class IGWebdriverHandler:
+class IGWebDriverHandler:
     def __init__(self, driver):
         self.driver = driver
 
     def login(self, username, password):
         self.driver.get(IG_LOGIN_URL)
-        WebDriverWait(self.driver, 15).until(
-            EC.presence_of_element_located((By.NAME, 'username'))
-        )
+        wait_for_find(self.driver, '//input[@name="username"]')
         self.driver.find_element(By.NAME, 'username').send_keys(username)
         self.driver.find_element(By.NAME, 'password').send_keys(password)
         self.driver.find_element(By.NAME, 'password').send_keys(Keys.ENTER)
@@ -28,59 +27,21 @@ class IGWebdriverHandler:
     def open_comments(self):
         self.driver.get('https://www.instagram.com/your_activity/interactions/comments')
 
-    def select_mode(self):
-        WebDriverWait(self.driver, 15).until(
-            EC.presence_of_element_located((By.XPATH, '//span[text()="Select"]'))
-        )
-        self.driver.find_element(By.XPATH, '//span[text()="Select"]').click()
-
-    def get_comments_tree(self):
-        sleep(5)
-        flexboxes = self.driver.find_elements(By.XPATH, '//div[@data-testid="comments_container_non_empty_state"]/div[@data-testid="comments_container_non_empty_state"]/div/div/div') # Selecting Full Container
-        flexbox_tree = []
-        branch = []
-        for flexbox in flexboxes: # Splitting the flexboxes into branches
-            if ('flex-grow: 1' not in flexbox.get_attribute('style')) and len(branch) > 0: # Opening of new branch and adding old one
-                flexbox_tree.append(branch) # Adding branch to the tree
-                branch = []
-            branch.append(flexbox) # Adding to the branch
-        if len(flexbox_tree) == 0:
-            return False
-        filtered_tree = []
-        for branch in flexbox_tree:
+    def select_comments(self):
+        wait_for_find(self.driver,'/html/body/div[1]/div/div/div[2]/div/div/div[1]/div[1]/div[1]/section/main/div/article/div/div[2]/div/div/div[1]/div/div/div/div/div/div[2]/div[2]/span',click=True)
+        elems = wait_for_find(self.driver,'//div/div[2]/div/div/div/div/div/div[2]/div/div/div',criteria=By.XPATH,multiple=True)
+        success_count = 0
+        for e in elems:
             try:
-                username = branch[0].find_element(By.XPATH, 'div/div/div[2]/div/div/span').text
-            except: # This is unsafe, must be fixed
-                pass
-            if username != 'Instagram user':
-                filtered_tree.append(branch)
-        return filtered_tree
+                e.click()
+                success_count += 1
+            except ElementClickInterceptedException:
+                continue
+        return success_count
 
-    def select_all(self):
-        WebDriverWait(self.driver, 15).until(
-            EC.presence_of_element_located((By.XPATH, '//div[@data-bloks-name="ig.components.Icon"]'))
-        )
-        flexbox_tree = self.get_comments_tree()
-        if flexbox_tree == False:
-            return False
-        for branch in flexbox_tree:
-            for flexbox in branch[1:]:
-                try:
-                    flexbox.find_element(By.XPATH, 'div/div/div[2]/div').click()
-                except (ElementNotInteractableException, ElementClickInterceptedException, StaleElementReferenceException) as E:
-                    pass
-        return True
 
     def delete_comments(self):
-        WebDriverWait(self.driver, 15).until(
-            EC.presence_of_element_located((By.XPATH, '//span[text()="Delete"]'))
-        )
-        self.driver.find_element(By.XPATH, '//span[text()="Delete"]').click()
+        wait_for_find(self.driver, '/html/body/div[1]/div/div/div[2]/div/div/div[1]/div[1]/div[1]/section/main/div/article/div/div[2]/div/div/div[1]/div/div/div/div/div/div[4]/div/div/div[2]/div/div/div[2]', click=True)
         sleep(2)
-        WebDriverWait(self.driver, 15).until(
-            EC.presence_of_element_located((By.XPATH, '//div[text()="Delete"]'))
-        )
-        self.driver.find_element(By.XPATH, '//div[text()="Delete"]').click()
-        WebDriverWait(self.driver, 15).until(
-            EC.presence_of_element_located((By.XPATH, '//span[text()="Select"]'))
-        )
+        wait_for_find(self.driver, '//div[text()="Delete"]', click=True)
+        wait_for_find(self.driver, '//span[text()="Select"]')
