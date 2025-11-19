@@ -32,11 +32,11 @@ You will need a **WebDriver** installed for the browser you plan to use:
 
 ## Installation
 
-'''
+```
 $ git clone https://github.com/yourusername/ghostgram
 $ cd ghostgram
 $ pip3 install . --break-system-packages
-'''
+```
 
 ---
 
@@ -44,13 +44,13 @@ $ pip3 install . --break-system-packages
 
 Run Ghostgram with the following command:  
 
-'''
+```
 ghostgram --firefox --visual --username YOUR_USERNAME --password YOUR_PASSWORD
-'''
+```
 
 ### Options
 
-'''
+```
 usage: ghostgram [-h] [--firefox] [--chrome] [--visual] --username USERNAME --password PASSWORD
 
 options:
@@ -60,19 +60,19 @@ options:
   --visual             Show browser UI.
   --username USERNAME  Instagram username.
   --password PASSWORD  Instagram password.
-'''
+```
 
 ---
 
 ## Example Output
 
-'''
+```
 [server@debian ghostgram]$ ghostgram --firefox --visual --username XXXXXXXXXXX --password XXXXX
 [i] Logging in...
 [i] Successfully logged in.
 [i] Deleting comments...
 [+] Deleted 367 comments.
-'''
+```
 
 ---
 
