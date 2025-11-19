@@ -64,18 +64,6 @@ options:
 
 ---
 
-## Example Output
-
-```
-[server@debian ghostgram]$ ghostgram --firefox --visual --username XXXXXXXXXXX --password XXXXX
-[i] Logging in...
-[i] Successfully logged in.
-[i] Deleting comments...
-[+] Deleted 367 comments.
-```
-
----
-
 ## Disclaimer
 
 The author is **not responsible** for misuse, account bans, or any errors caused by this tool. Always follow **legal and privacy guidelines**.  
