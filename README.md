@@ -11,7 +11,7 @@
 
 Ghostgram automates the process of deleting all your Instagram comments, since Instagram does not provide an option to do this instantly.
 
-<img src="screenshot.png" width="600px">
+<img src="ghostgram_screenshot.png" width="600px">
 
 ---
 
